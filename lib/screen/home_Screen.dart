@@ -7,6 +7,7 @@ import 'package:news_app/models/categories_news_model.dart';
 import 'package:news_app/models/news_models.dart';
 import 'package:news_app/models/view/news_view_model.dart';
 import 'package:news_app/screen/categories_screen.dart';
+import 'package:news_app/screen/news_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -129,60 +130,88 @@ class _HomeScreenState extends State<HomeScreen> {
                       DateTime dateTime = DateTime.parse(
                         snapshot.data!.articles![index].publishedAt.toString(),
                       );
-                      return SizedBox(
-                        child: Stack(
-                          children: [
-                            // This one section is for image
-                            Container(
-                              height: sizeOfDevice.height * 0.5,
-                              width: sizeOfDevice.width * .9,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: sizeOfDevice.height * 0.02,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: CachedNetworkImage(
-                                  imageUrl: snapshot
-                                      .data!.articles![index].urlToImage
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NewsDetailScreen(
+                                  author: snapshot.data!.articles![index].author
                                       .toString(),
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => spinKit2,
+                                  content: snapshot
+                                      .data!.articles![index].content
+                                      .toString(),
+                                  description: snapshot
+                                      .data!.articles![index].description
+                                      .toString(),
+                                  imageUrl: snapshot
+                                      .data!.articles![index].urlToImage!,
+                                  newsDate: snapshot
+                                      .data!.articles![index].publishedAt
+                                      .toString(),
+                                  newsTitle: snapshot
+                                      .data!.articles![index].title
+                                      .toString(),
+                                  source: snapshot
+                                      .data!.articles![index].source!.name
+                                      .toString()),
+                            ),
+                          );
+                        },
+                        child: SizedBox(
+                          child: Stack(
+                            children: [
+                              // This one section is for image
+                              Container(
+                                height: sizeOfDevice.height * 0.5,
+                                width: sizeOfDevice.width * .9,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: sizeOfDevice.height * 0.02,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: CachedNetworkImage(
+                                    imageUrl: snapshot
+                                        .data!.articles![index].urlToImage
+                                        .toString(),
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => spinKit2,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              bottom: sizeOfDevice.height * .07,
-                              right: sizeOfDevice.width * .05,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Container(
-                                  padding: EdgeInsets.all(15),
-                                  height: sizeOfDevice.height * .22,
-                                  alignment: Alignment.bottomCenter,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: sizeOfDevice.width * 0.7,
-                                        child: Text(
-                                          snapshot
-                                              .data!.articles![index].content
-                                              .toString(),
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.acme(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
+                              Positioned(
+                                bottom: sizeOfDevice.height * .07,
+                                right: sizeOfDevice.width * .05,
+                                child: Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    height: sizeOfDevice.height * .22,
+                                    alignment: Alignment.bottomCenter,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: sizeOfDevice.width * 0.7,
+                                          child: Text(
+                                            snapshot
+                                                .data!.articles![index].content
+                                                .toString(),
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.acme(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      Container(
-                                        child: Row(
+                                        Spacer(),
+                                        Row(
                                           spacing: sizeOfDevice.width * 0.02,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -202,13 +231,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -238,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Padding(
                       padding: EdgeInsets.only(
                         left: sizeOfDevice.height * 0.02,
-                        // right: sizeOfDevice.height * 0.02,
+                        right: sizeOfDevice.height * 0.02,
                         bottom: 10,
                       ),
                       child: Row(

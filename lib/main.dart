@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "News App",
       theme: ThemeData(
+        appBarTheme: AppBarTheme(),
         scaffoldBackgroundColor: Colors.grey.shade100,
       ),
       home: SplashScreen(),
