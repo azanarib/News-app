@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/models/categories_news_model.dart';
 import 'package:news_app/models/view/news_view_model.dart';
+import 'package:news_app/screen/news_details_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -115,72 +116,101 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         );
                         return Padding(
                           padding: EdgeInsets.only(bottom: 10.0, top: 20.0),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: CachedNetworkImage(
-                                  imageUrl: snapshot
-                                      .data!.articles![index].urlToImage
-                                      .toString(),
-                                  fit: BoxFit.cover,
-                                  width: sizeOfDevice.width * .4,
-                                  height: sizeOfDevice.height * .3,
-                                  placeholder: (context, url) => Center(
-                                    child: SpinKitCircle(
-                                      size: 50,
-                                      color: Colors.blue,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewsDetailScreen(
+                                      author: snapshot.data!.articles![index].author
+                                          .toString(),
+                                      content: snapshot
+                                          .data!.articles![index].content
+                                          .toString(),
+                                      description: snapshot
+                                          .data!.articles![index].description
+                                          .toString(),
+                                      imageUrl: snapshot
+                                          .data!.articles![index].urlToImage
+                                          .toString(),
+                                      newsDate: snapshot
+                                          .data!.articles![index].publishedAt
+                                          .toString(),
+                                      newsTitle: snapshot
+                                          .data!.articles![index].title
+                                          .toString(),
+                                      source: snapshot.data!.articles![index].source!.name.toString()),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: CachedNetworkImage(
+                                    imageUrl: snapshot
+                                        .data!.articles![index].urlToImage
+                                        .toString(),
+                                    fit: BoxFit.cover,
+                                    width: sizeOfDevice.width * .4,
+                                    height: sizeOfDevice.height * .3,
+                                    placeholder: (context, url) => Center(
+                                      child: SpinKitCircle(
+                                        size: 50,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error_outline,
+                                      color: Colors.red,
                                     ),
                                   ),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.error_outline,
-                                    color: Colors.red,
-                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: sizeOfDevice.height * .18,
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        snapshot.data!.articles![index].title
-                                            .toString(),
-                                        maxLines: 2,
-                                        style: GoogleFonts.acme(
-                                          color: Colors.black54,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 13,
+                                Expanded(
+                                  child: Container(
+                                    height: sizeOfDevice.height * .18,
+                                    padding: EdgeInsets.only(left: 15),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          snapshot.data!.articles![index].title
+                                              .toString(),
+                                          maxLines: 2,
+                                          style: GoogleFonts.acme(
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 30,
+                                          ),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      Text(
-                                        snapshot
-                                            .data!.articles![index].source!.name
-                                            .toString(),
-                                        style: GoogleFonts.acme(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 15,
+                                        Spacer(),
+                                        Text(
+                                          snapshot.data!.articles![index]
+                                              .source!.name
+                                              .toString(),
+                                          style: GoogleFonts.acme(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 15,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        format.format(dateTime),
-                                        style: GoogleFonts.acme(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 15,
+                                        Text(
+                                          format.format(dateTime),
+                                          style: GoogleFonts.acme(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 15,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },

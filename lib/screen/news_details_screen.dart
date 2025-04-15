@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -50,7 +51,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 imageUrl: widget.imageUrl,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
+                  child: SpinKitCircle(
+                    size: 50,
                     color: Colors.black,
                   ),
                 ),
