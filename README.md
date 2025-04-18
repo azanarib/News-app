@@ -1,16 +1,27 @@
-# news_app
+# 📰 News App
 
-A new Flutter project.
+A simple and beautiful news application built using **Flutter**, which fetches the latest headlines from a public API and displays them in an organized, clean UI.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+- Latest news from various categories (e.g. business, sports, technology)
+- Beautiful and responsive UI
+- Pull to refresh
+- News detail screen with full article
+- External browser launch for full news
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter (Dart)
+- HTTP Package
+- News API (e.g. newsapi.org)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🔧 Installation
+
+To run this app locally, follow these steps:
+
+```bash
+git clone https://github.com/azanarib/News-app.git
+cd news-app-flutter
+flutter pub get
+flutter run
