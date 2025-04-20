@@ -35,7 +35,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0.0,
       ),
       body: Stack(
@@ -48,6 +48,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 topRight: Radius.circular(30),
               ),
               child: CachedNetworkImage(
+                scale: 1.0,
                 imageUrl: widget.imageUrl,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
@@ -56,7 +57,11 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     color: Colors.black,
                   ),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => Center(
+                    child: Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                )),
               ),
             ),
           ),

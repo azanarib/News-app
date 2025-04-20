@@ -31,7 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final sizeOfDevice = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           "News",
@@ -111,21 +114,152 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: NewsViewModel().fetchNewsChannelHeadlines(name),
                 builder: (BuildContext context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: SpinKitCircle(
-                            color: Colors.black,
-                            size: 50,
-                          ),
-                        ),
-                      ],
+                    return Center(
+                      child: SpinKitCircle(
+                        color: Colors.black,
+                        size: 50,
+                      ),
                     );
                   } else {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.articles!.length,
+                      itemBuilder: (context, index) {
+                        DateTime dateTime = DateTime.parse(
+                          snapshot.data!.articles![index].publishedAt
+                              .toString(),
+                        );
+                        return SizedBox(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewsDetailScreen(
+                                      author: snapshot.data!.articles![index].author
+                                          .toString(),
+                                      content: snapshot.data!.articles![index].content
+                                          .toString(),
+                                      description: snapshot
+                                          .data!.articles![index].description
+                                          .toString(),
+                                      imageUrl: snapshot
+                                          .data!.articles![index].urlToImage!,
+                                      newsDate: snapshot
+                                          .data!.articles![index].publishedAt
+                                          .toString(),
+                                      newsTitle: snapshot.data!.articles![index].title
+                                          .toString(),
+                                      source: snapshot
+                                          .data!.articles![index].source!.name
+                                          .toString()),
+                                ),
+                              );
+                            },
+                            child: Stack(
+                              children: [
+                                // This one section is for images.
+                                Container(
+                                  height: sizeOfDevice.height * 0.5,
+                                  width: sizeOfDevice.width * .9,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: sizeOfDevice.height * 0.02,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: CachedNetworkImage(
+                                      imageUrl: snapshot
+                                          .data!.articles![index].urlToImage
+                                          .toString(),
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => spinKit2,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: sizeOfDevice.height * .07,
+                                  right: sizeOfDevice.width * .05,
+                                  child: Card(
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Container(
+                                      padding: EdgeInsets.all(15),
+                                      height: sizeOfDevice.height * .22,
+                                      alignment: Alignment.bottomCenter,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: sizeOfDevice.width * 0.7,
+                                            child: Text(
+                                              snapshot.data!.articles![index]
+                                                  .content
+                                                  .toString(),
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.acme(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            spacing: sizeOfDevice.width * 0.02,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot.data!.articles![index]
+                                                    .source!.name
+                                                    .toString(),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.acme(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Text(
+                                                format.format(dateTime),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 20.0,
+                left: 20,
+                bottom: 20,
+              ),
+              child: FutureBuilder<CategoriesNewsModel>(
+                future: NewsViewModel().fetchCategoriesNewsApi("General"),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return SpinKitCircle(
+                      color: Colors.black,
+                      size: 50,
+                    );
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
                       itemCount: snapshot.data!.articles!.length,
                       itemBuilder: (context, index) {
                         DateTime dateTime = DateTime.parse(
@@ -138,158 +272,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => NewsDetailScreen(
-                                    author: snapshot.data!.articles![index].author
-                                        .toString(),
-                                    content: snapshot.data!.articles![index].content
-                                        .toString(),
-                                    description: snapshot
-                                        .data!.articles![index].description
-                                        .toString(),
-                                    imageUrl: snapshot
-                                        .data!.articles![index].urlToImage!,
-                                    newsDate: snapshot
-                                        .data!.articles![index].publishedAt
-                                        .toString(),
-                                    newsTitle: snapshot
-                                        .data!.articles![index].title
-                                        .toString(),
-                                    source: snapshot
-                                        .data!.articles![index].source!.name
-                                        .toString()),
+                                  author: snapshot.data!.articles![index].author
+                                      .toString(),
+                                  content: snapshot
+                                      .data!.articles![index].content
+                                      .toString(),
+                                  description: snapshot
+                                      .data!.articles![index].description
+                                      .toString(),
+                                  imageUrl: snapshot
+                                      .data!.articles![index].urlToImage
+                                      .toString(),
+                                  newsDate: snapshot
+                                      .data!.articles![index].publishedAt
+                                      .toString(),
+                                  newsTitle: snapshot
+                                      .data!.articles![index].title
+                                      .toString(),
+                                  source: snapshot
+                                      .data!.articles![index].source!.name
+                                      .toString(),
+                                ),
                               ),
                             );
-                          },
-                          child: Stack(
-                            children: [
-                              // This one section is for image
-                              Container(
-                                height: sizeOfDevice.height * 0.5,
-                                width: sizeOfDevice.width * .9,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: sizeOfDevice.height * 0.02,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: CachedNetworkImage(
-                                    imageUrl: snapshot
-                                        .data!.articles![index].urlToImage
-                                        .toString(),
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => spinKit2,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: sizeOfDevice.height * .07,
-                                right: sizeOfDevice.width * .05,
-                                child: Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: Container(
-                                    padding: EdgeInsets.all(15),
-                                    height: sizeOfDevice.height * .22,
-                                    alignment: Alignment.bottomCenter,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: sizeOfDevice.width * 0.7,
-                                          child: Text(
-                                            snapshot
-                                                .data!.articles![index].content
-                                                .toString(),
-                                            maxLines: 4,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.acme(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Row(
-                                          spacing: sizeOfDevice.width * 0.02,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              snapshot.data!.articles![index]
-                                                  .source!.name
-                                                  .toString(),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.acme(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Text(
-                                              format.format(dateTime),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            ),
-            Container(
-              width: sizeOfDevice.width,
-              padding: EdgeInsets.only(
-                left: 15,
-              ),
-              height: sizeOfDevice.height * .4,
-              child: FutureBuilder<CategoriesNewsModel>(
-                future: NewsViewModel().fetchCategoriesNewsApi("General"),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return SpinKitCircle(
-                      color: Colors.black,
-                      size: 50,
-                    );
-                  } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.articles!.length,
-                      itemBuilder: (context, index) {
-                        DateTime dateTime = DateTime.parse(
-                          snapshot.data!.articles![index].publishedAt
-                              .toString(),
-                        );
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewsDetailScreen(
-                                        author: snapshot.data!.articles![index].author
-                                            .toString(),
-                                        content: snapshot
-                                            .data!.articles![index].content
-                                            .toString(),
-                                        description: snapshot
-                                            .data!.articles![index].description
-                                            .toString(),
-                                        imageUrl: snapshot
-                                            .data!.articles![index].urlToImage
-                                            .toString(),
-                                        newsDate: snapshot
-                                            .data!.articles![index].publishedAt
-                                            .toString(),
-                                        newsTitle:
-                                            snapshot.data!.articles![index].title.toString(),
-                                        source: snapshot.data!.articles![index].source!.name.toString())));
                           },
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 10.0),

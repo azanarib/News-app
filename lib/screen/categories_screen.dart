@@ -35,9 +35,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Widget build(BuildContext context) {
     final sizeOfDevice = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        scrolledUnderElevation: 0.0,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -50,36 +51,31 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: categoriesList.length,
                   itemBuilder: (context, index) {
-                    return Material(
-                      borderRadius: BorderRadius.circular(20),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {});
-                          categoryName = categoriesList[index];
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: categoryName == categoriesList[index]
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12.0),
-                              child: Center(
-                                child: Text(
-                                  categoriesList[index].toString(),
-                                  style: GoogleFonts.acme(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
-                                    fontSize: 25,
-                                  ),
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {});
+                        categoryName = categoriesList[index];
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: categoryName == categoriesList[index]
+                                ? Colors.blue
+                                : Colors.grey,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Center(
+                              child: Text(
+                                categoriesList[index].toString(),
+                                style: GoogleFonts.acme(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                  fontSize: 25,
                                 ),
                               ),
                             ),
@@ -88,6 +84,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                     );
                   }),
+            ),
+            SizedBox(
+              height: 10,
             ),
             Expanded(
               child: FutureBuilder<CategoriesNewsModel>(
@@ -157,7 +156,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     placeholder: (context, url) => Center(
                                       child: SpinKitCircle(
                                         size: 50,
-                                        color: Colors.blue,
+                                        color: Colors.black,
                                       ),
                                     ),
                                     errorWidget: (context, url, error) => Icon(
