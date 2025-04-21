@@ -4,23 +4,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class NewsDetailScreen extends StatefulWidget {
-  final String imageUrl,
-      newsTitle,
-      author,
-      newsDate,
-      description,
-      content,
-      source;
-  const NewsDetailScreen(
-      {super.key,
-      required this.author,
-      required this.content,
-      required this.description,
-      required this.imageUrl,
-      required this.newsDate,
-      required this.newsTitle,
-      required this.source});
+  dynamic data;
+  NewsDetailScreen({
+    super.key,
+    required this.data,
+  });
 
   @override
   State<NewsDetailScreen> createState() => _NewsDetailScreenState();
@@ -31,7 +21,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   Widget build(BuildContext context) {
     final sizeOfDevice = MediaQuery.of(context).size;
     final format = DateFormat("MMMM dd, yyyy");
-    DateTime dateTime = DateTime.parse(widget.newsDate);
+    DateTime dateTime = DateTime.parse(widget.data["newsDate"]);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -49,7 +39,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               ),
               child: CachedNetworkImage(
                 scale: 1.0,
-                imageUrl: widget.imageUrl,
+                imageUrl: widget.data["imageUrl"],
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
                   child: SpinKitCircle(
@@ -79,7 +69,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             child: ListView(
               children: [
                 Text(
-                  widget.newsTitle,
+                  widget.data["newsTitle"],
                   style: GoogleFonts.acme(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -92,7 +82,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.source,
+                        widget.data["source"],
                         style: GoogleFonts.acme(
                           color: Colors.black,
                           fontSize: 12,
@@ -112,7 +102,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   height: sizeOfDevice.height * .03,
                 ),
                 Text(
-                  widget.description,
+                  widget.data["description"],
                   style: GoogleFonts.acme(
                       color: Colors.black54,
                       fontSize: 20,

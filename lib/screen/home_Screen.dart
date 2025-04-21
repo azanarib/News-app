@@ -7,7 +7,7 @@ import 'package:news_app/models/categories_news_model.dart';
 import 'package:news_app/models/news_models.dart';
 import 'package:news_app/models/view/news_view_model.dart';
 import 'package:news_app/screen/categories_screen.dart';
-import 'package:news_app/screen/news_details_screen.dart';
+import 'package:news_app/utils/routes/routes_name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -132,29 +132,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         return SizedBox(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NewsDetailScreen(
-                                      author: snapshot.data!.articles![index].author
-                                          .toString(),
-                                      content: snapshot.data!.articles![index].content
-                                          .toString(),
-                                      description: snapshot
-                                          .data!.articles![index].description
-                                          .toString(),
-                                      imageUrl: snapshot
-                                          .data!.articles![index].urlToImage!,
-                                      newsDate: snapshot
-                                          .data!.articles![index].publishedAt
-                                          .toString(),
-                                      newsTitle: snapshot.data!.articles![index].title
-                                          .toString(),
-                                      source: snapshot
-                                          .data!.articles![index].source!.name
-                                          .toString()),
-                                ),
-                              );
+                              Navigator.pushNamed(
+                                  context, RoutesName.detailsScreen,
+                                  arguments: {
+                                    "author": snapshot
+                                        .data!.articles![index].author
+                                        .toString(),
+                                    "content": snapshot
+                                        .data!.articles![index].content
+                                        .toString(),
+                                    "description": snapshot
+                                        .data!.articles![index].description
+                                        .toString(),
+                                    "imageUrl": snapshot
+                                        .data!.articles![index].urlToImage
+                                        .toString(),
+                                    "newsDate": snapshot
+                                        .data!.articles![index].publishedAt
+                                        .toString(),
+                                    "newsTitle": snapshot
+                                        .data!.articles![index].title
+                                        .toString(),
+                                    "source": snapshot
+                                        .data!.articles![index].source!.name
+                                        .toString(),
+                                  });
                             },
                             child: Stack(
                               children: [
@@ -268,33 +270,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                         return InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NewsDetailScreen(
-                                  author: snapshot.data!.articles![index].author
+                            Navigator.pushNamed(
+                                context, RoutesName.detailsScreen,
+                                arguments: {
+                                  "author": snapshot
+                                      .data!.articles![index].author
                                       .toString(),
-                                  content: snapshot
+                                  "content": snapshot
                                       .data!.articles![index].content
                                       .toString(),
-                                  description: snapshot
+                                  "description": snapshot
                                       .data!.articles![index].description
                                       .toString(),
-                                  imageUrl: snapshot
+                                  "imageUrl": snapshot
                                       .data!.articles![index].urlToImage
                                       .toString(),
-                                  newsDate: snapshot
+                                  "newsDate": snapshot
                                       .data!.articles![index].publishedAt
                                       .toString(),
-                                  newsTitle: snapshot
+                                  "newsTitle": snapshot
                                       .data!.articles![index].title
                                       .toString(),
-                                  source: snapshot
+                                  "source": snapshot
                                       .data!.articles![index].source!.name
                                       .toString(),
-                                ),
-                              ),
-                            );
+                                });
                           },
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
