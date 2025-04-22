@@ -16,6 +16,11 @@ A simple and beautiful news application built using **Flutter**, which fetches t
 - HTTP Package
 - News API (e.g. newsapi.org)
 
+## 📸 Screenshots
+
+![news_app](https://github.com/user-attachments/assets/3ff93406-ca3f-43ee-9e07-2c327f698eaf)
+
+
 ## 🔧 Installation
 
 To run this app locally, follow these steps:
